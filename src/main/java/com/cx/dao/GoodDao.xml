@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间的值为dao层接口的权限定名 -->
+<mapper namespace="com.cx.dao.GoodDao">
+	<select id="selallbrand" resultType="Brand">
+		SELECT * FROM gbrand
+	</select>
+	<select id="selalltype" resultType="Type">
+		SELECT * FROM gtype
+	</select>
+	<select id="selallgoods" resultMap="gmap">
+		SELECT * FROM goods JOIN gbrand JOIN gtype on goods.brand=gbrand.bid AND goods.type=gtype.tid
+		<where>
+			<if test="price1!=null and price1!=''">and #{price1} &lt;price</if>
+			<if test="price2!=null and price2!=''">and #{price2} &gt;price</if>
+			<if test="bid!=0 and bid!=null">and #{bid}=bid</if>
+			<if test="tid!=0 and tid!=null">and #{tid}=tid</if>
+			<if test="goodname!=null and goodname!=''">and china like concat('%',#{goodname},'%')</if>
+			
+		</where>
+	</select>
+	<resultMap type="Good" id="gmap">
+		<id column="id" property="id"/>
+		<result column="china" property="china"/>
+		<result column="english" property="english"/>
+		<result column="size" property="size"/>
+		<result column="price" property="price"/>
+		<result column="mach" property="mach"/>
+		<result column="nother" property="noter"/>
+		<result column="img" property="img"/>
+		
+		<collection property="type" javaType="Type">
+			<id column="tid" property="tid"/>
+			<result column="tname" property="tname"/>
+		</collection>
+		<collection property="brand" javaType="Brand">
+			<id column="bid" property="bid"/>
+			<result column="bname" property="bname"/>
+		</collection>
+	</resultMap>
+	
+	<insert id="">
+		INSERT INTO VALUE()
+	</insert>
+</mapper>
